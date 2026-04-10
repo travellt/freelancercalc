@@ -22,7 +22,7 @@ export const TOOLS: Tool[] = [
     description: 'Work out the day rate you need to charge to match a permanent salary — accounting for holidays, sick days, pension, and tax.',
     category: 'career',
     tier: 1,
-    available: false,
+    available: true,
   },
   {
     slug: 'ir35-status-checker',
@@ -30,7 +30,7 @@ export const TOOLS: Tool[] = [
     description: 'Assess your IR35 status with a clear, guided questionnaire based on HMRC criteria.',
     category: 'tax',
     tier: 1,
-    available: false,
+    available: true,
   },
   {
     slug: 'vat-registration-checker',
@@ -38,7 +38,7 @@ export const TOOLS: Tool[] = [
     description: 'Track your turnover against the VAT threshold and model the impact of voluntary registration.',
     category: 'tax',
     tier: 1,
-    available: false,
+    available: true,
   },
   {
     slug: 'quarterly-tax-estimator',

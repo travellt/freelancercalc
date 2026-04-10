@@ -22,6 +22,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/tools/day-rate-calculator" className="text-sm text-gray-500 hover:text-brand-600">
+                  Day Rate Calculator
+                </Link>
+              </li>
+              <li>
                 <Link href="/tools" className="text-sm text-gray-500 hover:text-brand-600">
                   View all tools →
                 </Link>
