@@ -7,16 +7,20 @@ import {
   dividendTax,
   studentLoanRepayment,
   NI2_ANNUAL,
-  NI1_EMPLOYER_THRESHOLD,
-  EMPLOYMENT_ALLOWANCE,
+  PERSONAL_ALLOWANCE,
+  NI1_PRIMARY_THRESHOLD,
   type StudentLoanPlan,
+  type TaxRegion,
 } from './tax';
 
 export interface TakeHomeInput {
   annualRevenue: number;
   annualExpenses: number;
   studentLoan: StudentLoanPlan;
-  pensionPercent: number; // % of profits to contribute to pension
+  pensionPercent: number;
+  otherIncome: number; // employment income, rental, etc.
+  region: TaxRegion;
+  ltdSalary: number; // director salary (user can adjust from optimal)
 }
 
 export interface SoleTraderResult {
@@ -25,6 +29,7 @@ export interface SoleTraderResult {
   profit: number;
   pensionContribution: number;
   taxableProfit: number;
+  totalTaxableWithOther: number;
   incomeTax: number;
   class4NICs: number;
   class2NICs: number;
@@ -32,6 +37,8 @@ export interface SoleTraderResult {
   totalDeductions: number;
   takeHome: number;
   effectiveTaxRate: number;
+  monthlyTakeHome: number;
+  weeklyTakeHome: number;
 }
 
 export interface LtdCompanyResult {
@@ -50,27 +57,37 @@ export interface LtdCompanyResult {
   salaryEmployeeNICs: number;
   studentLoan: number;
   totalPersonalTax: number;
+  totalCostInclCorpTax: number;
   takeHome: number;
   effectiveTaxRate: number;
+  monthlyTakeHome: number;
+  weeklyTakeHome: number;
 }
 
 export interface ComparisonResult {
   soleTrader: SoleTraderResult;
   ltdCompany: LtdCompanyResult;
-  difference: number; // positive = ltd company better
+  difference: number;
 }
 
 export function calculateSoleTrader(input: TakeHomeInput): SoleTraderResult {
   const profit = input.annualRevenue - input.annualExpenses;
-  const pensionContribution = Math.round(profit * (input.pensionPercent / 100));
+  const pensionContribution = Math.round(Math.max(0, profit) * (input.pensionPercent / 100));
   const taxableProfit = Math.max(0, profit - pensionContribution);
 
-  const tax = incomeTax(taxableProfit);
+  // Income tax applies to total income (freelance profit + other income)
+  const totalTaxable = taxableProfit + input.otherIncome;
+  const taxOnTotal = incomeTax(totalTaxable, input.region);
+  const taxOnOther = input.otherIncome > 0 ? incomeTax(input.otherIncome, input.region) : 0;
+  const tax = Math.max(0, taxOnTotal - taxOnOther); // marginal tax on freelance income
+
   const ni4 = class4NICs(taxableProfit);
   const ni2 = taxableProfit > 0 ? NI2_ANNUAL : 0;
-  const sl = studentLoanRepayment(taxableProfit, input.studentLoan);
+  const sl = studentLoanRepayment(totalTaxable, input.studentLoan);
+  const slOnOther = input.otherIncome > 0 ? studentLoanRepayment(input.otherIncome, input.studentLoan) : 0;
+  const slOnFreelance = Math.max(0, sl - slOnOther);
 
-  const totalDeductions = tax + ni4 + ni2 + sl + pensionContribution;
+  const totalDeductions = tax + ni4 + ni2 + slOnFreelance + pensionContribution;
   const takeHome = profit - totalDeductions;
 
   return {
@@ -79,57 +96,52 @@ export function calculateSoleTrader(input: TakeHomeInput): SoleTraderResult {
     profit,
     pensionContribution,
     taxableProfit,
+    totalTaxableWithOther: totalTaxable,
     incomeTax: tax,
     class4NICs: ni4,
     class2NICs: Math.round(ni2 * 100) / 100,
-    studentLoan: sl,
+    studentLoan: slOnFreelance,
     totalDeductions,
     takeHome: Math.round(takeHome * 100) / 100,
     effectiveTaxRate: profit > 0 ? Math.round(((totalDeductions - pensionContribution) / profit) * 1000) / 10 : 0,
+    monthlyTakeHome: Math.round(takeHome / 12),
+    weeklyTakeHome: Math.round(takeHome / 52),
   };
 }
 
 /**
- * For Ltd company, we use the common optimisation:
- * - Pay salary at the NI primary threshold (£12,570) to use personal allowance without triggering employee NICs
- * - Take the rest as dividends
- *
- * For single-director companies, employment allowance is NOT available (since April 2023)
- * when the only employee is a director.
+ * Ltd company calculation.
+ * User can set director salary (default: £12,570 = personal allowance, optimal for most).
+ * Employment allowance NOT available for single-director companies (since April 2023).
  */
 export function calculateLtdCompany(input: TakeHomeInput): LtdCompanyResult {
   const grossProfit = input.annualRevenue - input.annualExpenses;
 
-  // Optimal salary: at the NI primary threshold to avoid employee NICs
-  // but still use the personal allowance
-  const optimalSalary = Math.min(12_570, grossProfit);
-
-  // Employer NICs on salary (no employment allowance for single-director companies)
+  const optimalSalary = Math.min(input.ltdSalary, Math.max(0, grossProfit));
   const employerNI = class1EmployerNICs(optimalSalary);
+  const pensionContribution = Math.round(Math.max(0, grossProfit) * (input.pensionPercent / 100));
 
-  // Pension contribution from the company (pre-corporation-tax expense)
-  const pensionContribution = Math.round(grossProfit * (input.pensionPercent / 100));
-
-  // Corporation tax calculation
-  // Company profit = gross profit - salary - employer NICs - pension
   const companyProfit = Math.max(0, grossProfit - optimalSalary - employerNI - pensionContribution);
   const corpTax = corporationTax(companyProfit);
-
-  // Retained profit after corporation tax = available for dividends
   const retainedProfit = companyProfit - corpTax;
   const dividends = Math.max(0, retainedProfit);
 
-  // Personal tax on salary
-  const salaryTax = incomeTax(optimalSalary);
+  // Personal tax — salary + dividends sit on top of any other income
+  const totalSalaryIncome = optimalSalary + input.otherIncome;
+  const salaryTaxOnTotal = incomeTax(totalSalaryIncome, input.region);
+  const salaryTaxOnOther = input.otherIncome > 0 ? incomeTax(input.otherIncome, input.region) : 0;
+  const salaryTax = Math.max(0, salaryTaxOnTotal - salaryTaxOnOther);
+
   const salaryNI = class1EmployeeNICs(optimalSalary);
+  const divTax = dividendTax(dividends, totalSalaryIncome, input.region);
 
-  // Dividend tax (dividends sit on top of salary income)
-  const divTax = dividendTax(dividends, optimalSalary);
+  const totalPersonalIncome = optimalSalary + dividends + input.otherIncome;
+  const sl = studentLoanRepayment(totalPersonalIncome, input.studentLoan);
+  const slOnOther = input.otherIncome > 0 ? studentLoanRepayment(input.otherIncome, input.studentLoan) : 0;
+  const slOnCompany = Math.max(0, sl - slOnOther);
 
-  // Student loan on total income (salary + dividends)
-  const sl = studentLoanRepayment(optimalSalary + dividends, input.studentLoan);
-
-  const totalPersonalTax = salaryTax + salaryNI + divTax + sl;
+  const totalPersonalTax = salaryTax + salaryNI + divTax + slOnCompany;
+  const totalCostInclCorpTax = corpTax + totalPersonalTax + employerNI;
   const takeHome = optimalSalary + dividends - totalPersonalTax;
 
   return {
@@ -146,13 +158,15 @@ export function calculateLtdCompany(input: TakeHomeInput): LtdCompanyResult {
     dividendTax: divTax,
     salaryIncomeTax: salaryTax,
     salaryEmployeeNICs: salaryNI,
-    studentLoan: sl,
+    studentLoan: slOnCompany,
     totalPersonalTax,
+    totalCostInclCorpTax,
     takeHome: Math.round(takeHome * 100) / 100,
-    effectiveTaxRate:
-      grossProfit > 0
-        ? Math.round(((corpTax + totalPersonalTax + employerNI) / grossProfit) * 1000) / 10
-        : 0,
+    effectiveTaxRate: grossProfit > 0
+      ? Math.round((totalCostInclCorpTax / grossProfit) * 1000) / 10
+      : 0,
+    monthlyTakeHome: Math.round(takeHome / 12),
+    weeklyTakeHome: Math.round(takeHome / 52),
   };
 }
 

@@ -7,7 +7,9 @@ export const TAX_YEAR = '2025/26';
 export const TAX_YEAR_START = '2025-04-06';
 export const TAX_YEAR_END = '2026-04-05';
 
-// Income Tax
+export type TaxRegion = 'england' | 'scotland';
+
+// Income Tax — England/Wales/NI
 export const PERSONAL_ALLOWANCE = 12_570;
 export const BASIC_RATE_LIMIT = 50_270;
 export const HIGHER_RATE_LIMIT = 125_140;
@@ -15,6 +17,16 @@ export const BASIC_RATE = 0.20;
 export const HIGHER_RATE = 0.40;
 export const ADDITIONAL_RATE = 0.45;
 export const PA_TAPER_THRESHOLD = 100_000;
+
+// Scottish Income Tax 2025/26
+const SCOTTISH_BANDS = [
+  { name: 'Starter', from: 0, to: 2_306, rate: 0.19 },
+  { name: 'Basic', from: 2_306, to: 14_005, rate: 0.20 },
+  { name: 'Intermediate', from: 14_005, to: 31_092, rate: 0.21 },
+  { name: 'Higher', from: 31_092, to: 62_430, rate: 0.42 },
+  { name: 'Advanced', from: 62_430, to: 112_570, rate: 0.45 },
+  { name: 'Top', from: 112_570, to: Infinity, rate: 0.48 },
+] as const;
 
 // National Insurance — Class 4 (Self-Employed)
 export const NI4_LOWER_PROFITS = 12_570;
@@ -64,20 +76,29 @@ export type StudentLoanPlan = keyof typeof STUDENT_LOAN | 'none';
 // Pension
 export const PENSION_ANNUAL_ALLOWANCE = 60_000;
 
+// Trading Allowance (sole traders can claim instead of actual expenses if lower)
+export const TRADING_ALLOWANCE = 1_000;
+
 // ─── Calculation helpers ───
 
 /** Calculate personal allowance accounting for taper above £100k */
 export function effectivePersonalAllowance(income: number): number {
   if (income <= PA_TAPER_THRESHOLD) return PERSONAL_ALLOWANCE;
-  const reduction = Math.floor((income - PA_TAPER_THRESHOLD) / 2);
+  const reduction = (income - PA_TAPER_THRESHOLD) / 2;
   return Math.max(0, PERSONAL_ALLOWANCE - reduction);
 }
 
-/** Income tax on a given taxable income (after personal allowance) */
-export function incomeTax(gross: number): number {
+/** Income tax on gross income — supports England/Wales/NI and Scotland */
+export function incomeTax(gross: number, region: TaxRegion = 'england'): number {
   const pa = effectivePersonalAllowance(gross);
   const taxable = Math.max(0, gross - pa);
+  if (taxable <= 0) return 0;
 
+  if (region === 'scotland') return scottishIncomeTax(taxable);
+  return englandIncomeTax(taxable);
+}
+
+function englandIncomeTax(taxable: number): number {
   let tax = 0;
   const basicBand = Math.min(taxable, BASIC_RATE_LIMIT - PERSONAL_ALLOWANCE);
   tax += basicBand * BASIC_RATE;
@@ -94,7 +115,22 @@ export function incomeTax(gross: number): number {
   return Math.round(tax * 100) / 100;
 }
 
-/** Class 4 NICs for self-employed */
+function scottishIncomeTax(taxable: number): number {
+  let tax = 0;
+  let remaining = taxable;
+
+  for (const band of SCOTTISH_BANDS) {
+    if (remaining <= 0) break;
+    const bandWidth = band.to === Infinity ? remaining : band.to - band.from;
+    const inBand = Math.min(remaining, bandWidth);
+    tax += inBand * band.rate;
+    remaining -= inBand;
+  }
+
+  return Math.round(tax * 100) / 100;
+}
+
+/** Class 4 NICs for self-employed (same across UK) */
 export function class4NICs(profits: number): number {
   if (profits <= NI4_LOWER_PROFITS) return 0;
   const mainBand = Math.min(profits, NI4_UPPER_PROFITS) - NI4_LOWER_PROFITS;
@@ -116,32 +152,38 @@ export function class1EmployerNICs(salary: number): number {
   return Math.round((salary - NI1_EMPLOYER_THRESHOLD) * NI1_EMPLOYER_RATE * 100) / 100;
 }
 
-/** Corporation tax on profits */
+/**
+ * Corporation tax on profits.
+ * HMRC marginal relief formula:
+ *   tax = profits × 25%
+ *   relief = (250,000 − profits) × (profits / 250,000) × 3/200
+ * Simplified: effective rate scales from 19% at £50k to 25% at £250k
+ */
 export function corporationTax(profits: number): number {
   if (profits <= 0) return 0;
   if (profits <= CT_SMALL_PROFITS_LIMIT) return Math.round(profits * CT_SMALL_RATE * 100) / 100;
   if (profits >= CT_MAIN_LIMIT) return Math.round(profits * CT_MAIN_RATE * 100) / 100;
-  // Marginal relief
+  // Marginal relief band
   const mainTax = profits * CT_MAIN_RATE;
-  const relief = ((CT_MAIN_LIMIT - profits) * (CT_MAIN_RATE - CT_SMALL_RATE) * profits) / CT_MAIN_LIMIT;
+  const fraction = 3 / 200; // standard marginal relief fraction
+  const relief = (CT_MAIN_LIMIT - profits) * fraction;
   return Math.round((mainTax - relief) * 100) / 100;
 }
 
 /** Dividend tax on dividends, given the taxpayer's other income for band calculation */
-export function dividendTax(dividends: number, otherIncome: number): number {
+export function dividendTax(dividends: number, otherIncome: number, region: TaxRegion = 'england'): number {
   if (dividends <= 0) return 0;
   const pa = effectivePersonalAllowance(otherIncome + dividends);
   const totalTaxable = Math.max(0, otherIncome + dividends - pa);
   const otherTaxable = Math.max(0, otherIncome - pa);
 
-  // Dividends sit on top of other income in the bands
   let taxableDividends = totalTaxable - otherTaxable;
-  // Apply dividend allowance
   const allowanceUsed = Math.min(taxableDividends, DIVIDEND_ALLOWANCE);
   taxableDividends -= allowanceUsed;
 
   if (taxableDividends <= 0) return 0;
 
+  // Dividend rates are the same across UK (not affected by Scottish bands)
   const basicCeiling = BASIC_RATE_LIMIT - PERSONAL_ALLOWANCE;
   const higherCeiling = HIGHER_RATE_LIMIT - PERSONAL_ALLOWANCE;
 
@@ -149,7 +191,6 @@ export function dividendTax(dividends: number, otherIncome: number): number {
   let cursor = otherTaxable + allowanceUsed;
   let remaining = taxableDividends;
 
-  // Basic rate band
   if (cursor < basicCeiling && remaining > 0) {
     const inBasic = Math.min(remaining, basicCeiling - cursor);
     tax += inBasic * DIVIDEND_BASIC_RATE;
@@ -157,7 +198,6 @@ export function dividendTax(dividends: number, otherIncome: number): number {
     remaining -= inBasic;
   }
 
-  // Higher rate band
   if (cursor < higherCeiling && remaining > 0) {
     const inHigher = Math.min(remaining, higherCeiling - cursor);
     tax += inHigher * DIVIDEND_HIGHER_RATE;
@@ -165,7 +205,6 @@ export function dividendTax(dividends: number, otherIncome: number): number {
     remaining -= inHigher;
   }
 
-  // Additional rate
   if (remaining > 0) {
     tax += remaining * DIVIDEND_ADDITIONAL_RATE;
   }
