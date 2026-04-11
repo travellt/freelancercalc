@@ -62,7 +62,7 @@ export const TOOLS: Tool[] = [
     description: 'See how much you need to save for retirement when there\'s no employer contribution.',
     category: 'money',
     tier: 2,
-    available: false,
+    available: true,
   },
   {
     slug: 'expense-checker',
