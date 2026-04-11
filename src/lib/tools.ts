@@ -46,7 +46,7 @@ export const TOOLS: Tool[] = [
     description: 'Estimate your quarterly payments on account so you\'re never caught short by HMRC.',
     category: 'tax',
     tier: 2,
-    available: false,
+    available: true,
   },
   {
     slug: 'dividend-salary-optimiser',
@@ -54,7 +54,7 @@ export const TOOLS: Tool[] = [
     description: 'Find the optimal salary/dividend split for limited company directors to minimise tax.',
     category: 'tax',
     tier: 2,
-    available: false,
+    available: true,
   },
   {
     slug: 'freelancer-pension-calculator',
