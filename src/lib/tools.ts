@@ -70,7 +70,7 @@ export const TOOLS: Tool[] = [
     description: 'Find out which expenses you can claim as a freelancer — with HMRC-compliant explanations.',
     category: 'tax',
     tier: 2,
-    available: false,
+    available: true,
   },
 ];
 
