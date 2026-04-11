@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -15,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://freelancercalc.co.uk'),
   title: {
     default: 'FreelancerCalc — Free Tax Tools for UK Freelancers',
     template: '%s | FreelancerCalc',
@@ -30,6 +32,25 @@ export const metadata: Metadata = {
     'self-employed tax calculator',
     'contractor tax UK',
   ],
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    siteName: 'FreelancerCalc',
+    title: 'FreelancerCalc — Free Tax Tools for UK Freelancers',
+    description: 'Free, accurate calculators for UK freelancers. Compare sole trader vs limited company, calculate day rates, check IR35 status, and more.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FreelancerCalc — Free Tax Tools for UK Freelancers',
+    description: 'Free, accurate calculators for UK freelancers, contractors, and sole traders.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: '/',
+  },
 };
 
 export default function RootLayout({
@@ -39,6 +60,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <head>
+        <Script
+          defer
+          data-domain="freelancercalc.co.uk"
+          src="https://plausible.io/js/script.js"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="flex min-h-full flex-col bg-white text-gray-900">
         <Header />
         <main className="flex-1">{children}</main>

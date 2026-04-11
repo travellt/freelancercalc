@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import IR35Checker from '@/components/tools/IR35Checker';
+import { FAQSchema, WebAppSchema } from '@/components/seo/StructuredData';
 
 export const metadata: Metadata = {
   title: 'IR35 Status Checker — Are You Inside or Outside IR35?',
@@ -19,6 +20,12 @@ export const metadata: Metadata = {
 export default function IR35CheckerPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+      <WebAppSchema name="IR35 Status Checker" description="Assess your IR35 status with a guided questionnaire. Get actionable tips to strengthen your position." url="https://freelancercalc.co.uk/tools/ir35-status-checker" />
+      <FAQSchema faqs={[
+        { question: 'What is IR35 and how does it affect contractors?', answer: 'IR35 is UK tax legislation targeting disguised employment. If your contract falls inside IR35, you are taxed as an employee despite working through a limited company, losing the tax advantages of dividend extraction. The three key tests are: control, substitution, and mutuality of obligation.' },
+        { question: 'What is the most important factor in IR35?', answer: 'The right of substitution is widely considered the single most important factor. If you have a genuine, contractual right to send a substitute and would pay them from your own fees, this is a very strong indicator of being outside IR35.' },
+        { question: 'Who determines IR35 status since April 2021?', answer: 'Since April 2021, medium and large private sector clients (and all public sector clients) are responsible for determining your IR35 status under the off-payroll working rules. Small private sector clients still leave the determination to the contractor.' },
+      ]} />
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">IR35 Status Checker</h1>
         <p className="mt-3 text-lg text-gray-600">

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import TakeHomeCalculator from '@/components/tools/TakeHomeCalculator';
+import { FAQSchema, WebAppSchema } from '@/components/seo/StructuredData';
 import { TAX_YEAR } from '@/lib/tax';
 
 export const metadata: Metadata = {
@@ -18,6 +19,17 @@ export const metadata: Metadata = {
 export default function TakeHomePayCalculatorPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+      <WebAppSchema
+        name="Take-Home Pay Calculator — Sole Trader vs Limited Company"
+        description="Compare your take-home pay as a sole trader vs limited company. Full tax breakdown for the current UK tax year."
+        url="https://freelancercalc.co.uk/tools/take-home-pay-calculator"
+      />
+      <FAQSchema faqs={[
+        { question: 'Is it better to be a sole trader or limited company?', answer: 'It depends on your profit level. Below roughly £35,000 profit, sole trader is simpler and often better. Above £35,000-40,000, a limited company typically saves tax through the combination of corporation tax and dividend extraction, though accountant fees (£1,000-2,000/year) reduce the saving.' },
+        { question: 'How much tax does a sole trader pay in the UK?', answer: 'Sole traders pay income tax (20-45%) on profits above the £12,570 personal allowance, plus Class 4 National Insurance (6% on profits between £12,570-£50,270, then 2% above) and Class 2 NICs (£3.45/week). The effective tax rate on £50,000 profit is approximately 19%.' },
+        { question: 'What salary should a limited company director pay themselves?', answer: 'Most single-director companies pay a salary of £12,570 (the personal allowance threshold) to use the full tax-free allowance without triggering income tax, then extract remaining profits as dividends. Some pay less to reduce employer NICs.' },
+        { question: 'Does a Scottish taxpayer pay more tax as a freelancer?', answer: 'Scottish income tax has six bands (19% to 48%) compared to three for the rest of the UK (20% to 45%). At most income levels, Scottish taxpayers pay slightly more income tax, though National Insurance rates are the same across the UK.' },
+      ]} />
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Take-Home Pay Calculator</h1>
         <p className="mt-3 text-lg text-gray-600">

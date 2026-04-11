@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import VatChecker from '@/components/tools/VatChecker';
+import { FAQSchema, WebAppSchema } from '@/components/seo/StructuredData';
 import { TAX_YEAR } from '@/lib/tax';
 
 export const metadata: Metadata = {
@@ -19,6 +20,12 @@ export const metadata: Metadata = {
 export default function VatCheckerPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+      <WebAppSchema name="VAT Registration Checker" description="Check if you need to register for VAT, compare Standard vs Flat Rate Scheme, and model the impact on your pricing." url="https://freelancercalc.co.uk/tools/vat-registration-checker" />
+      <FAQSchema faqs={[
+        { question: 'What is the VAT threshold in the UK for 2025/26?', answer: 'The VAT registration threshold is £90,000 for the 2025/26 tax year. This was increased from £85,000 in April 2024. You must register if your rolling 12-month taxable turnover exceeds this threshold.' },
+        { question: 'Should I register for VAT voluntarily?', answer: 'Voluntary registration can benefit freelancers who mostly work with VAT-registered businesses (B2B), since those clients reclaim the VAT. You can also reclaim VAT on your own expenses. However, if you work mainly with consumers (B2C), registration effectively increases your prices by 20%.' },
+        { question: 'What is the VAT Flat Rate Scheme?', answer: 'The Flat Rate Scheme lets you pay a fixed percentage of your gross turnover to HMRC instead of tracking VAT on every expense. The percentage varies by trade (e.g., 14.5% for IT consultancy). It is simpler but not always cheaper than the standard scheme.' },
+      ]} />
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">VAT Registration Checker</h1>
         <p className="mt-3 text-lg text-gray-600">
