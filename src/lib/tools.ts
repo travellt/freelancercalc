@@ -72,6 +72,22 @@ export const TOOLS: Tool[] = [
     tier: 2,
     available: true,
   },
+  {
+    slug: 'mortgage-affordability-calculator',
+    title: 'Mortgage Calculator for Self-Employed',
+    description: 'Find out how much you can borrow as a freelancer. Stress test, borrowing capacity, and tips for self-employed applicants.',
+    category: 'money',
+    tier: 2,
+    available: true,
+  },
+  {
+    slug: 'mileage-allowance-calculator',
+    title: 'Mileage Allowance Calculator',
+    description: 'Calculate your HMRC mileage claim and compare simplified rates vs actual vehicle costs.',
+    category: 'tax',
+    tier: 3,
+    available: true,
+  },
 ];
 
 export function getAvailableTools(): Tool[] {
