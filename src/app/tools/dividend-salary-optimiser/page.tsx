@@ -25,8 +25,8 @@ export default function DividendOptimiserPage() {
         url="https://freelancercalc.co.uk/tools/dividend-salary-optimiser"
       />
       <FAQSchema faqs={[
-        { question: 'What is the optimal salary for a limited company director in 2025/26?', answer: 'For most single-director companies, the optimal salary is £12,570 (the personal allowance). This uses the full tax-free allowance without triggering income tax, while employer NICs at 13.8% above £5,000 are relatively low. The remaining profit is extracted as dividends at lower tax rates (8.75% basic, 33.75% higher).' },
-        { question: 'Is it better to take salary or dividends from my limited company?', answer: 'A mix is almost always optimal. A small salary uses your personal allowance and counts toward your state pension record. Dividends are taxed at lower rates than salary (8.75% vs 20% basic rate) and don\'t attract National Insurance. The optimal split depends on your total profit level.' },
+        { question: 'What is the optimal salary for a limited company director in 2026/27?', answer: 'For most single-director companies, the optimal salary is £12,570 (the personal allowance). This uses the full tax-free allowance without triggering income tax, while employer NICs at 15% above £5,000 are relatively low. The remaining profit is extracted as dividends at lower tax rates (10.75% basic, 35.75% higher).' },
+        { question: 'Is it better to take salary or dividends from my limited company?', answer: 'A mix is almost always optimal. A small salary uses your personal allowance and counts toward your state pension record. Dividends are taxed at lower rates than salary (10.75% vs 20% basic rate) and don\'t attract National Insurance. The optimal split depends on your total profit level.' },
         { question: 'Do I have to pay myself a salary from my limited company?', answer: 'No, you can take £0 salary and extract everything as dividends. However, paying at least a small salary (around £6,396-£12,570) qualifies you for state pension credits and uses your personal allowance. The tax cost of a small salary is usually minimal or zero.' },
       ]} />
       <div className="mb-8">
@@ -57,7 +57,7 @@ export default function DividendOptimiserPage() {
             At £12,570, your salary exactly matches the personal allowance — meaning zero income tax
             on salary. Employer NICs apply above £5,000, but the cost (around £1,045/year) is offset
             by the tax-free allowance. Everything above £12,570 is better extracted as dividends
-            because dividend tax rates (8.75% basic) are lower than the combined income tax + NICs
+            because dividend tax rates (10.75% basic) are lower than the combined income tax + NICs
             on additional salary.
           </p>
 

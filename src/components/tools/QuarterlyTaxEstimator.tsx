@@ -137,7 +137,7 @@ export default function QuarterlyTaxEstimator() {
         <div className="mt-4 divide-y divide-gray-100">
           <Row label="Income tax" value={formatGBP(result.incomeTax)} hint={region === 'scotland' ? 'Scottish rates' : undefined} />
           <Row label="Class 4 NICs" value={formatGBP(result.class4NICs)} hint="6% / 2%" />
-          <Row label="Class 2 NICs" value={formatGBP(result.class2NICs)} hint="£3.45/week" />
+          <Row label="Class 2 NICs" value={formatGBP(result.class2NICs)} hint="£3.65/week" />
           {result.studentLoan > 0 && <Row label="Student loan repayment" value={formatGBP(result.studentLoan)} />}
           <Row label="Total tax bill" value={formatGBP(result.totalAnnualTax)} bold />
         </div>

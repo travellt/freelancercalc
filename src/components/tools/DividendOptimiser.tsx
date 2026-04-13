@@ -164,7 +164,7 @@ export default function DividendOptimiser() {
         <div className="mt-4 divide-y divide-gray-100">
           <Row label="Company gross profit" value={formatGBP(grossProfit)} />
           <Row label="Director salary" value={`−${formatGBP(optimal.salary)}`} indent />
-          <Row label="Employer NICs" value={`−${formatGBP(optimal.employerNICs)}`} indent hint="13.8% above £5,000" />
+          <Row label="Employer NICs" value={`−${formatGBP(optimal.employerNICs)}`} indent hint="15% above £5,000" />
           {optimal.companyPensionContrib > 0 && <Row label="Company pension" value={`−${formatGBP(optimal.companyPensionContrib)}`} indent />}
           <Row label="Corporation tax" value={`−${formatGBP(optimal.corporationTax)}`} indent hint={optimal.corporationTaxableProfit <= 50000 ? '19%' : '19-25%'} />
           <Row label="Dividends available" value={formatGBP(optimal.dividendsAvailable)} bold />

@@ -6,7 +6,7 @@ import { TAX_YEAR } from '@/lib/tax';
 export const metadata: Metadata = {
   title: 'Sole Trader vs Limited Company: The Complete 2026 Comparison',
   description:
-    'Should you be a sole trader or set up a limited company? A comprehensive guide covering tax differences, NICs, liability, admin, costs, and when to switch. Updated for 2025/26.',
+    'Should you be a sole trader or set up a limited company? A comprehensive guide covering tax differences, NICs, liability, admin, costs, and when to switch. Updated for 2026/27.',
   keywords: [
     'sole trader vs limited company',
     'sole trader or limited company',
@@ -145,7 +145,7 @@ export default function SoleTraderVsLtdGuidePage() {
           <p>Here&apos;s the headline comparison. We&apos;ll dig into each point below.</p>
           <ComparisonTable rows={[
             { label: 'Tax on profits', soleTrader: 'Income tax (20-45%)', ltdCompany: 'Corporation tax (19-25%) + dividend tax (8.75-39.35%)' },
-            { label: 'National Insurance', soleTrader: 'Class 2 (£3.45/week) + Class 4 (6%/2%)', ltdCompany: 'Employer NI (13.8%) + Employee NI (only if salary above threshold)' },
+            { label: 'National Insurance', soleTrader: 'Class 2 (£3.65/week) + Class 4 (6%/2%)', ltdCompany: 'Employer NI (15%) + Employee NI (only if salary above threshold)' },
             { label: 'Personal liability', soleTrader: 'Unlimited — you\'re personally liable', ltdCompany: 'Limited to your investment in the company' },
             { label: 'Setup cost', soleTrader: 'Free — just register with HMRC', ltdCompany: '£12 online at Companies House' },
             { label: 'Annual accounts', soleTrader: 'Self-assessment tax return', ltdCompany: 'Company accounts + Corporation Tax return + personal self-assessment' },
@@ -181,7 +181,7 @@ export default function SoleTraderVsLtdGuidePage() {
           <ul className="list-inside list-disc space-y-1">
             <li><strong>Corporation tax:</strong> 19% on profits up to £50,000, rising to 25% above £250,000</li>
             <li><strong>Director salary:</strong> Taxed as employment income (income tax + NICs)</li>
-            <li><strong>Dividends:</strong> 8.75% (basic), 33.75% (higher), 39.35% (additional) — after a £500 tax-free allowance</li>
+            <li><strong>Dividends:</strong> 10.75% (basic), 35.75% (higher), 39.35% (additional) — after a £500 tax-free allowance</li>
           </ul>
 
           <CalloutBox type="tip">
@@ -200,11 +200,12 @@ export default function SoleTraderVsLtdGuidePage() {
           <p>Let&apos;s compare the tax on £60,000 profit (after expenses) under each structure:</p>
           <ComparisonTable rows={[
             { label: 'Profit', soleTrader: '£60,000', ltdCompany: '£60,000' },
-            { label: 'Income/corp tax', soleTrader: '£11,432', ltdCompany: '£7,775 (corp tax + div tax)' },
-            { label: 'NICs', soleTrader: '£3,986', ltdCompany: '£1,045 (employer NI on salary)' },
-            { label: 'Total tax', soleTrader: '~£15,418', ltdCompany: '~£8,820' },
-            { label: 'Take-home', soleTrader: '~£44,582', ltdCompany: '~£51,180' },
-            { label: 'Annual saving', soleTrader: '—', ltdCompany: '~£6,598/year' },
+            { label: 'Income/corp tax', soleTrader: '£11,432', ltdCompany: '£8,796 (corporation tax)' },
+            { label: 'Dividend tax', soleTrader: '—', ltdCompany: '£3,977' },
+            { label: 'NICs', soleTrader: '£2,647 (Class 2 + 4)', ltdCompany: '£1,136 (employer NI)' },
+            { label: 'Total tax', soleTrader: '~£14,078', ltdCompany: '~£13,909' },
+            { label: 'Take-home', soleTrader: '~£45,922', ltdCompany: '~£46,091' },
+            { label: 'Difference', soleTrader: '—', ltdCompany: 'Only ~£170/year more' },
           ]} />
 
           <CalloutBox type="info">
@@ -223,7 +224,7 @@ export default function SoleTraderVsLtdGuidePage() {
           <h3 className="pt-2 text-base font-semibold text-gray-900">Sole trader NICs</h3>
           <p>Sole traders pay two types of National Insurance:</p>
           <ul className="list-inside list-disc space-y-1">
-            <li><strong>Class 2:</strong> £3.45/week (£179/year) — flat rate, builds state pension entitlement</li>
+            <li><strong>Class 2:</strong> £3.65/week (£190/year) — flat rate, builds state pension entitlement</li>
             <li><strong>Class 4:</strong> 6% on profits between £12,570–£50,270, then 2% above that</li>
           </ul>
           <p>
@@ -237,12 +238,13 @@ export default function SoleTraderVsLtdGuidePage() {
           </p>
           <ul className="list-inside list-disc space-y-1">
             <li><strong>Employee NICs:</strong> £0 (salary is at the threshold)</li>
-            <li><strong>Employer NICs:</strong> 13.8% on salary above £5,000 = ~£1,045/year</li>
+            <li><strong>Employer NICs:</strong> 15% on salary above £5,000 = ~£1,136/year</li>
           </ul>
           <p>
-            Crucially, <strong>dividends don&apos;t attract any National Insurance</strong>. This is the
-            primary reason limited companies are more tax-efficient at higher income levels — you
-            avoid the 6% Class 4 NICs on the dividend portion entirely.
+            Crucially, <strong>dividends don&apos;t attract any National Insurance</strong>. However,
+            with the 2026/27 dividend tax increases (basic rate now 10.75%, higher rate 35.75%),
+            the tax advantage of limited companies has narrowed significantly compared to previous
+            years. The NI saving on dividends is partly offset by higher dividend tax rates.
           </p>
 
           <CalloutBox type="warning">
@@ -430,14 +432,15 @@ export default function SoleTraderVsLtdGuidePage() {
               admin and accountant costs of a limited company will eat any tax saving.
             </li>
             <li>
-              <strong>£30,000-40,000 profit:</strong> The grey zone. Run the numbers with our
-              calculator. If the saving after accountant fees is meaningful to you, and you don&apos;t
-              mind the extra admin, consider incorporating.
+              <strong>£30,000-50,000 profit:</strong> The grey zone. The tax saving from a limited
+              company is small and likely wiped out by higher accountant fees (£1,000-2,000/year).
+              Run the exact numbers with our calculator.
             </li>
             <li>
-              <strong>Over £40,000 profit:</strong> A limited company almost certainly saves you
-              money. The question is only whether IR35 or your specific circumstances change the
-              picture.
+              <strong>Over £50,000 profit:</strong> A limited company starts to save meaningful
+              money — but less than it used to, due to the 2026/27 dividend tax increases. At
+              £60,000 the saving is only ~£170/year before accountant fees.
+              At £80,000+ the saving grows to several thousand.
             </li>
           </ul>
         </Section>

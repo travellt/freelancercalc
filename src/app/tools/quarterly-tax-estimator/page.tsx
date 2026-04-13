@@ -22,7 +22,7 @@ export default function QuarterlyTaxEstimatorPage() {
       <WebAppSchema name="Quarterly Tax Estimator" description="Estimate your self-assessment tax bill and see when payments are due." url="https://freelancercalc.co.uk/tools/quarterly-tax-estimator" />
       <FAQSchema faqs={[
         { question: 'How do payments on account work for self-assessment?', answer: 'Payments on account are advance payments toward your next tax bill, each equal to 50% of your previous year\'s tax. The first is due 31 January during the tax year, and the second 31 July after it ends. A balancing payment covers any remaining tax due on 31 January the following year.' },
-        { question: 'When is the self-assessment tax deadline?', answer: 'For the 2025/26 tax year: the tax return must be filed online by 31 January 2027. The balancing payment (and first payment on account for the following year) is also due on 31 January 2027. Paper returns have an earlier deadline of 31 October 2026.' },
+        { question: 'When is the self-assessment tax deadline?', answer: 'For the 2026/27 tax year: the tax return must be filed online by 31 January 2028. The balancing payment (and first payment on account for the following year) is also due on 31 January 2028. Paper returns have an earlier deadline of 31 October 2027.' },
         { question: 'How much should I save for tax each month as a freelancer?', answer: 'A common rule of thumb is 25-30% of profit, but the exact amount depends on your income level and tax band. Use this calculator to get a precise monthly figure based on your expected profit.' },
       ]} />
       <div className="mb-8">

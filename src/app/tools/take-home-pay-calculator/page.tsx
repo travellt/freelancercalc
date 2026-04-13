@@ -26,7 +26,7 @@ export default function TakeHomePayCalculatorPage() {
       />
       <FAQSchema faqs={[
         { question: 'Is it better to be a sole trader or limited company?', answer: 'It depends on your profit level. Below roughly £35,000 profit, sole trader is simpler and often better. Above £35,000-40,000, a limited company typically saves tax through the combination of corporation tax and dividend extraction, though accountant fees (£1,000-2,000/year) reduce the saving.' },
-        { question: 'How much tax does a sole trader pay in the UK?', answer: 'Sole traders pay income tax (20-45%) on profits above the £12,570 personal allowance, plus Class 4 National Insurance (6% on profits between £12,570-£50,270, then 2% above) and Class 2 NICs (£3.45/week). The effective tax rate on £50,000 profit is approximately 19%.' },
+        { question: 'How much tax does a sole trader pay in the UK?', answer: 'Sole traders pay income tax (20-45%) on profits above the £12,570 personal allowance, plus Class 4 National Insurance (6% on profits between £12,570-£50,270, then 2% above) and Class 2 NICs (£3.65/week). The effective tax rate on £50,000 profit is approximately 19%.' },
         { question: 'What salary should a limited company director pay themselves?', answer: 'Most single-director companies pay a salary of £12,570 (the personal allowance threshold) to use the full tax-free allowance without triggering income tax, then extract remaining profits as dividends. Some pay less to reduce employer NICs.' },
         { question: 'Does a Scottish taxpayer pay more tax as a freelancer?', answer: 'Scottish income tax has six bands (19% to 48%) compared to three for the rest of the UK (20% to 45%). At most income levels, Scottish taxpayers pay slightly more income tax, though National Insurance rates are the same across the UK.' },
       ]} />
@@ -66,10 +66,10 @@ export default function TakeHomePayCalculatorPage() {
 
           <h3 className="pt-2 text-base font-semibold text-gray-900">When a limited company saves money</h3>
           <p>
-            Above roughly £35,000-40,000 in profit, the combination of corporation tax (19-25%)
-            plus dividend tax is typically less than income tax plus Class 4 NICs. The savings
-            increase significantly above £50,000. At £80,000 profit, you could save several
-            thousand pounds per year with a limited company.
+            With the 2026/27 dividend tax increases (basic rate now 10.75%), the crossover
+            point has shifted upward. Below £50,000 profit, the tax saving from a limited company
+            is minimal and often wiped out by higher accountant fees. Above £60,000-80,000, a
+            limited company typically saves several thousand pounds per year.
           </p>
 
           <h3 className="pt-2 text-base font-semibold text-gray-900">Other factors to consider</h3>

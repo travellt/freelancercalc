@@ -34,7 +34,7 @@ export default function ExpenseCheckerPage() {
           with clear guidance on what HMRC allows — for both sole traders and limited companies.
         </p>
         <p className="mt-2 text-sm text-gray-400">
-          Based on current HMRC guidance &middot; Updated for 2025/26
+          Based on current HMRC guidance &middot; Updated for 2026/27
         </p>
       </div>
 

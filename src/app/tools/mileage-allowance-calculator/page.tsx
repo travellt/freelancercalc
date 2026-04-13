@@ -21,7 +21,7 @@ export default function MileageCalculatorPage() {
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
       <WebAppSchema name="Mileage Allowance Calculator" description="Calculate your HMRC mileage claim. Compare simplified rates vs actual costs." url="https://freelancercalc.co.uk/tools/mileage-allowance-calculator" />
       <FAQSchema faqs={[
-        { question: 'What is the HMRC mileage rate for 2025/26?', answer: 'For cars and vans: 45p per mile for the first 10,000 business miles, then 25p per mile above that. Motorcycles: 24p per mile. Bicycles: 20p per mile. Plus 5p per mile per passenger on business journeys (cars only).' },
+        { question: 'What is the HMRC mileage rate for 2026/27?', answer: 'For cars and vans: 45p per mile for the first 10,000 business miles, then 25p per mile above that. Motorcycles: 24p per mile. Bicycles: 20p per mile. Plus 5p per mile per passenger on business journeys (cars only).' },
         { question: 'Can I claim mileage for commuting to work?', answer: 'No. Commuting between your home and a regular, permanent workplace is not business mileage. However, if you work from home as your main base, travel to client sites and temporary workplaces IS claimable business mileage.' },
         { question: 'Should I use simplified mileage rates or actual costs?', answer: 'For most freelancers with moderate business mileage, the simplified HMRC rates (45p/25p) are better and simpler. Actual costs may be better if you drive an older, efficient car with low running costs. You must choose one method per vehicle per year and cannot switch mid-year.' },
       ]} />
@@ -32,7 +32,7 @@ export default function MileageCalculatorPage() {
           compare it with actual vehicle costs to see which method saves you more.
         </p>
         <p className="mt-2 text-sm text-gray-400">
-          HMRC approved mileage rates &middot; 2025/26 tax year
+          HMRC approved mileage rates &middot; 2026/27 tax year
         </p>
       </div>
 

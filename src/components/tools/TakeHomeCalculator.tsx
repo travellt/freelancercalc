@@ -300,7 +300,7 @@ export default function TakeHomeCalculator() {
           {otherIncome > 0 && <BreakdownRow label="Other income" amount={otherIncome} indent hint="pushes freelance income into higher bands" />}
           <BreakdownRow label="Income tax" amount={-st.incomeTax} indent hint={region === 'scotland' ? 'Scottish rates' : undefined} />
           <BreakdownRow label="Class 4 NICs" amount={-st.class4NICs} indent hint="6% / 2%" />
-          <BreakdownRow label="Class 2 NICs" amount={-st.class2NICs} indent hint={`£${(3.45).toFixed(2)}/week`} />
+          <BreakdownRow label="Class 2 NICs" amount={-st.class2NICs} indent hint={`£${(3.65).toFixed(2)}/week`} />
           {st.studentLoan > 0 && <BreakdownRow label="Student loan repayment" amount={-st.studentLoan} indent />}
           <BreakdownRow label="Take-home pay" amount={st.takeHome} isTotal isPositive />
         </ResultCard>
@@ -310,11 +310,11 @@ export default function TakeHomeCalculator() {
           <BreakdownRow label="Business expenses" amount={-ltd.expenses} />
           <BreakdownRow label="Gross profit" amount={ltd.grossProfit} isTotal />
           <BreakdownRow label="Director salary" amount={-ltd.optimalSalary} indent hint={ltd.optimalSalary === PERSONAL_ALLOWANCE ? 'at personal allowance' : ltd.optimalSalary <= NI1_PRIMARY_THRESHOLD ? 'below NI threshold' : undefined} />
-          <BreakdownRow label="Employer NICs" amount={-ltd.employerNICs} indent hint="13.8% above £5,000" />
+          <BreakdownRow label="Employer NICs" amount={-ltd.employerNICs} indent hint="15% above £5,000" />
           {ltd.pensionContribution > 0 && <BreakdownRow label="Company pension contribution" amount={-ltd.pensionContribution} indent hint="pre-corporation-tax" />}
           <BreakdownRow label="Corporation tax" amount={-ltd.corporationTax} indent hint={ltd.corporationTaxableProfit <= 50000 ? '19%' : '19-25%'} />
           <BreakdownRow label="Dividends available" amount={ltd.dividends} isTotal />
-          <BreakdownRow label="Dividend tax" amount={-ltd.dividendTax} indent hint="8.75% / 33.75%" />
+          <BreakdownRow label="Dividend tax" amount={-ltd.dividendTax} indent hint="10.75% / 35.75%" />
           {ltd.salaryIncomeTax > 0 && <BreakdownRow label="Income tax on salary" amount={-ltd.salaryIncomeTax} indent />}
           {ltd.salaryEmployeeNICs > 0 && <BreakdownRow label="Employee NICs on salary" amount={-ltd.salaryEmployeeNICs} indent />}
           {ltd.studentLoan > 0 && <BreakdownRow label="Student loan repayment" amount={-ltd.studentLoan} indent />}

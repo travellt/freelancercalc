@@ -1,6 +1,6 @@
 import { type TaxRegion } from './tax';
 
-// HMRC Approved Mileage Allowance Payment (AMAP) rates 2025/26
+// HMRC Approved Mileage Allowance Payment (AMAP) rates 2026/27
 export const MILEAGE_RATES = {
   car: { first10k: 0.45, above10k: 0.25 },
   motorcycle: { flat: 0.24 },

@@ -75,18 +75,18 @@ export function calculateQuarterlyTax(input: QuarterlyTaxInput): QuarterlyTaxRes
   const totalPoaPaid = poaAmount * 2;
   const balancingPayment = Math.max(0, Math.round((totalAnnualTax - totalPoaPaid) * 100) / 100);
 
-  // Build payment schedule for 2025/26 tax year
+  // Build payment schedule for 2026/27 tax year
   const schedule: PaymentEvent[] = [];
 
   if (paymentsOnAccount) {
     schedule.push({
-      date: '31 January 2026',
+      date: '31 January 2027',
       label: '1st Payment on Account',
       amount: poaAmount,
       description: `50% of last year's tax bill (${formatGBP(input.previousYearTax)}). Also due: any balancing payment from last year.`,
     });
     schedule.push({
-      date: '31 July 2026',
+      date: '31 July 2027',
       label: '2nd Payment on Account',
       amount: poaAmount,
       description: `Second instalment — same amount as January.`,
@@ -94,17 +94,17 @@ export function calculateQuarterlyTax(input: QuarterlyTaxInput): QuarterlyTaxRes
   }
 
   schedule.push({
-    date: '31 January 2027',
+    date: '31 January 2028',
     label: 'Balancing Payment',
     amount: balancingPayment,
     description: paymentsOnAccount
       ? `Difference between actual tax (${formatGBP(totalAnnualTax)}) and POAs already paid (${formatGBP(totalPoaPaid)}).${totalAnnualTax > totalPoaPaid ? '' : ' You may receive a refund if your actual tax is lower than estimated.'}`
-      : `Full tax bill for 2025/26 — no payments on account as this is your first year or last year's bill was under £1,000.`,
+      : `Full tax bill for 2026/27 — no payments on account as this is your first year or last year's bill was under £1,000.`,
   });
 
   if (!input.isFirstYear && totalAnnualTax >= 1000) {
     schedule.push({
-      date: '31 January 2027',
+      date: '31 January 2028',
       label: '1st POA for next year',
       amount: Math.round(totalAnnualTax / 2),
       description: `Also due on the same date — 50% of this year's tax as advance payment for next year.`,
