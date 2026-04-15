@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { EXPENSE_CATEGORIES, searchExpenses, type ExpenseCategory } from '@/lib/expenses';
+import EmailCapture from './EmailCapture';
 
 function StatusBadge({ status }: { status: ExpenseCategory['claimable'] }) {
   const styles = {
@@ -178,6 +179,18 @@ export default function ExpenseChecker() {
           fraud cases). Digital photos of receipts are acceptable.
         </p>
       </div>
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="Business Expense Checker"
+        resultsSummary={`Checked ${results.length} expense categories | ${counts.yes} fully claimable | ${counts.partial} partially | ${counts.no} not claimable`}
+        resultsHtml={`
+          <h2>Business Expense Reference</h2>
+          <p>You checked <strong>${results.length} expense categories</strong> on FreelancerCalc.</p>
+          <p><strong>${counts.yes}</strong> fully claimable | <strong>${counts.partial}</strong> partially claimable | <strong>${counts.no}</strong> not claimable</p>
+          <p>Visit <a href="https://freelancercalc.co.uk/tools/expense-checker">freelancercalc.co.uk/tools/expense-checker</a> to check specific expenses.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">

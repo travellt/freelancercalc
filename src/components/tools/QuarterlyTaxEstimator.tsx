@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { calculateQuarterlyTax, type QuarterlyTaxResult } from '@/lib/quarterly-tax';
 import { formatGBP, TAX_YEAR, type StudentLoanPlan, type TaxRegion } from '@/lib/tax';
+import EmailCapture from './EmailCapture';
 
 function InputField({
   label, hint, value, onChange, prefix, suffix, min = 0, max, step = 1,
@@ -188,6 +189,19 @@ export default function QuarterlyTaxEstimator() {
           Tip: Set up an automatic standing order on the day you invoice so you never forget.
         </p>
       </div>
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="Quarterly Tax Estimator"
+        resultsSummary={`Annual tax: ${formatGBP(result.totalAnnualTax)} | Save monthly: ${formatGBP(result.monthlyReserve)} | Weekly: ${formatGBP(result.weeklyReserve)}`}
+        resultsHtml={`
+          <h2>Your Quarterly Tax Estimate (${TAX_YEAR})</h2>
+          <p><strong>Total annual tax:</strong> ${formatGBP(result.totalAnnualTax)}</p>
+          <p><strong>Monthly savings target:</strong> ${formatGBP(result.monthlyReserve)}</p>
+          <p><strong>Weekly savings target:</strong> ${formatGBP(result.weeklyReserve)}</p>
+          <p style="color:#6b7280;font-size:12px">Calculated at freelancercalc.co.uk using ${TAX_YEAR} HMRC rates.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">

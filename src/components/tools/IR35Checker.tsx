@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { IR35_QUESTIONS, assessIR35, type IR35Answers, type IR35Result } from '@/lib/ir35';
+import EmailCapture from './EmailCapture';
 
 const CATEGORY_LABELS = {
   control: 'Control',
@@ -201,6 +202,20 @@ export default function IR35Checker() {
           )}
         </div>
       </div>
+
+      {/* Email capture */}
+      {result && (
+        <EmailCapture
+          toolName="IR35 Status Checker"
+          resultsSummary={`IR35 assessment: ${result.status === 'likely-outside' ? 'Likely Outside IR35' : result.status === 'likely-inside' ? 'Likely Inside IR35' : 'Borderline'} | Score: ${result.score}%`}
+          resultsHtml={`
+            <h2>Your IR35 Status Assessment</h2>
+            <p><strong>Result:</strong> ${result.status === 'likely-outside' ? 'Likely Outside IR35' : result.status === 'likely-inside' ? 'Likely Inside IR35' : 'Borderline — Seek Professional Advice'}</p>
+            <p><strong>Score:</strong> ${result.score}% (higher = more likely outside IR35)</p>
+            <p style="color:#6b7280;font-size:12px">Assessed at freelancercalc.co.uk. This is not legal advice.</p>
+          `}
+        />
+      )}
 
       {/* Disclaimer */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">

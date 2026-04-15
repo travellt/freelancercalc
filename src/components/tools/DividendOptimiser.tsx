@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { optimiseSalaryDividend, type OptimiserResult } from '@/lib/dividend-optimiser';
 import { formatGBP, TAX_YEAR, type StudentLoanPlan, type TaxRegion } from '@/lib/tax';
+import EmailCapture from './EmailCapture';
 
 function InputField({
   label, hint, value, onChange, prefix, suffix, min = 0, max, step = 1,
@@ -221,6 +222,19 @@ export default function DividendOptimiser() {
           </table>
         </div>
       </div>
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="Dividend vs Salary Optimiser"
+        resultsSummary={`Optimal salary: ${formatGBP(optimal.salary)} | Dividends: ${formatGBP(optimal.dividendsAvailable)} | Take-home: ${formatGBP(optimal.takeHome)}`}
+        resultsHtml={`
+          <h2>Your Optimal Salary/Dividend Split (${TAX_YEAR})</h2>
+          <p><strong>Optimal salary:</strong> ${formatGBP(optimal.salary)}/year</p>
+          <p><strong>Dividends:</strong> ${formatGBP(optimal.dividendsAvailable)}/year</p>
+          <p><strong>Total take-home:</strong> ${formatGBP(optimal.takeHome)}/year</p>
+          <p style="color:#6b7280;font-size:12px">Calculated at freelancercalc.co.uk using ${TAX_YEAR} HMRC rates.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">

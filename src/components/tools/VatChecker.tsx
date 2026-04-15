@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { calculateVat, FLAT_RATE_CATEGORIES, type VatResult } from '@/lib/vat';
 import { formatGBP, TAX_YEAR } from '@/lib/tax';
+import EmailCapture from './EmailCapture';
 
 function InputField({
   label, hint, value, onChange, prefix, suffix, min = 0,
@@ -230,6 +231,19 @@ export default function VatChecker() {
           </div>
         </InfoCard>
       </div>
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="VAT Registration Checker"
+        resultsSummary={`Revenue: ${formatGBP(result.revenueToDate)} | ${result.percentOfThreshold}% of VAT threshold | ${result.mustRegister ? 'Must register' : 'Below threshold'}`}
+        resultsHtml={`
+          <h2>Your VAT Registration Check (${TAX_YEAR})</h2>
+          <p><strong>Annual revenue:</strong> ${formatGBP(result.revenueToDate)}</p>
+          <p><strong>VAT threshold:</strong> ${result.percentOfThreshold}% used</p>
+          <p><strong>Status:</strong> ${result.mustRegister ? 'You must register for VAT' : 'Below the VAT registration threshold'}</p>
+          <p style="color:#6b7280;font-size:12px">Calculated at freelancercalc.co.uk using ${TAX_YEAR} rates.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">
