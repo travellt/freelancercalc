@@ -88,6 +88,14 @@ export const TOOLS: Tool[] = [
     tier: 3,
     available: true,
   },
+  {
+    slug: 'working-from-home-allowance',
+    title: 'Working From Home Allowance',
+    description: 'Calculate your WFH tax relief. Compare HMRC simplified flat rates vs actual costs for sole traders, directors, and employees.',
+    category: 'tax',
+    tier: 3,
+    available: true,
+  },
 ];
 
 export function getAvailableTools(): Tool[] {

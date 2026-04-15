@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { calculateDayRate, type DayRateInput, type DayRateResult } from '@/lib/dayrate';
 import { formatGBP, TAX_YEAR, type StudentLoanPlan, type TaxRegion } from '@/lib/tax';
+import EmailCapture from './EmailCapture';
 
 function InputField({
   label, hint, value, onChange, prefix, suffix, min = 0, max, step = 1,
@@ -231,6 +232,18 @@ export default function DayRateCalculator() {
           </div>
         </div>
       </div>
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="Day Rate Calculator"
+        resultsSummary={`Day rate: ${formatGBP(result.requiredDayRate)} | Hourly: ${formatGBP(result.hourlyRate)} | Billable days: ${result.billableDays} | Take-home: ${formatGBP(result.annualTakeHome)}/yr`}
+        resultsHtml={`
+          <h2>Your Day Rate Calculation (${TAX_YEAR})</h2>
+          <p><strong>Required day rate:</strong> ${formatGBP(result.requiredDayRate)} | <strong>Hourly rate:</strong> ${formatGBP(result.hourlyRate)}</p>
+          <p><strong>Billable days:</strong> ${result.billableDays} | <strong>Annual take-home:</strong> ${formatGBP(result.annualTakeHome)}</p>
+          <p style="color:#6b7280;font-size:12px">Calculated at freelancercalc.co.uk using ${TAX_YEAR} HMRC rates.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">

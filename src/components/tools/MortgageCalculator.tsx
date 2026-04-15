@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import { calculateMortgage, type MortgageResult } from '@/lib/mortgage';
-import { formatGBP } from '@/lib/tax';
+import { formatGBP, TAX_YEAR } from '@/lib/tax';
+import EmailCapture from './EmailCapture';
 
 function InputField({
   label, hint, value, onChange, prefix, suffix, min = 0, max, step = 1,
@@ -175,6 +176,20 @@ export default function MortgageCalculator() {
           </ul>
         </div>
       )}
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="Mortgage Calculator for Self-Employed"
+        resultsSummary={`Loan: ${formatGBP(result.loanAmount)} | Monthly: ${formatGBP(result.monthlyPayment2yr)} | LTV: ${result.ltv}% | Stress test: ${result.passesStressTest ? 'Pass' : 'Fail'}`}
+        resultsHtml={`
+          <h2>Your Mortgage Affordability Check</h2>
+          <p><strong>Loan amount:</strong> ${formatGBP(result.loanAmount)} (${result.ltv}% LTV)</p>
+          <p><strong>Monthly payment:</strong> ${formatGBP(result.monthlyPayment2yr)} (2-year fixed)</p>
+          <p><strong>After fixed period:</strong> ${formatGBP(result.monthlyPaymentSVR)} (SVR)</p>
+          <p><strong>Stress test:</strong> ${result.passesStressTest ? 'Pass' : 'Fail'} (${result.affordabilityRatio}% of income)</p>
+          <p style="color:#6b7280;font-size:12px">Estimated at freelancercalc.co.uk. Always speak to a mortgage broker for self-employed advice.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">

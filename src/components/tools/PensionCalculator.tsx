@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import { calculatePension, type PensionResult } from '@/lib/pension';
-import { formatGBP } from '@/lib/tax';
+import { formatGBP, TAX_YEAR } from '@/lib/tax';
+import EmailCapture from './EmailCapture';
 
 function InputField({
   label, hint, value, onChange, prefix, suffix, min, max, step = 1,
@@ -174,6 +175,19 @@ export default function PensionCalculator() {
           Ltd company directors can make employer contributions — no NI and deductible from corporation tax.
         </p>
       </div>
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="Freelancer Pension Calculator"
+        resultsSummary={`Projected pot: ${formatGBP(result.projectedPotReal)} (today's money) | Annual income: ${formatGBP(result.annualDrawdownReal)} | ${onTrack ? 'On track' : `Shortfall: ${formatGBP(result.shortfall)}/yr`}`}
+        resultsHtml={`
+          <h2>Your Pension Projection</h2>
+          <p><strong>Projected pot at retirement:</strong> ${formatGBP(result.projectedPotReal)} (in today's money)</p>
+          <p><strong>Annual retirement income:</strong> ${formatGBP(result.annualDrawdownReal)} (${formatGBP(result.monthlyDrawdownReal)}/month)</p>
+          <p><strong>Status:</strong> ${onTrack ? 'On track to meet your target' : `Shortfall of ${formatGBP(result.shortfall)}/year vs your target`}</p>
+          <p style="color:#6b7280;font-size:12px">Projected at freelancercalc.co.uk. Based on ${TAX_YEAR} allowances.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">

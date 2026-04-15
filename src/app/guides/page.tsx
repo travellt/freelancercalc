@@ -23,6 +23,13 @@ const GUIDES: Guide[] = [
     readTime: '15 min',
     category: 'Business Structure',
   },
+  {
+    slug: 'what-expenses-can-freelancers-claim',
+    title: 'What Expenses Can Freelancers Claim? The Complete UK List',
+    description: 'Every allowable business expense for UK freelancers — office, travel, home office, software, professional services, and what you definitely can\'t claim.',
+    readTime: '12 min',
+    category: 'Tax & Expenses',
+  },
 ];
 
 export default function GuidesPage() {

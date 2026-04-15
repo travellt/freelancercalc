@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import { calculateMileage, type MileageResult, type VehicleType } from '@/lib/mileage';
-import { formatGBP, type TaxRegion } from '@/lib/tax';
+import { formatGBP, TAX_YEAR, type TaxRegion } from '@/lib/tax';
+import EmailCapture from './EmailCapture';
 
 function InputField({
   label, hint, value, onChange, prefix, suffix, min = 0, max, step = 1,
@@ -179,6 +180,19 @@ export default function MileageCalculator() {
           <p><strong>Keep a mileage log:</strong> Record the date, destination, purpose, and miles for every business journey. HMRC can ask for this.</p>
         </div>
       </div>
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="Mileage Allowance Calculator"
+        resultsSummary={`Annual claim: ${formatGBP(result.totalHmrcClaim)} | Tax saving: ${formatGBP(result.taxSaving20)}-${formatGBP(result.taxSaving40)} | ${annualMiles.toLocaleString()} miles`}
+        resultsHtml={`
+          <h2>Your Mileage Allowance Calculation (${TAX_YEAR})</h2>
+          <p><strong>Annual business miles:</strong> ${annualMiles.toLocaleString()}</p>
+          <p><strong>HMRC claim:</strong> ${formatGBP(result.totalHmrcClaim)}</p>
+          <p><strong>Tax saving:</strong> ${formatGBP(result.taxSaving20)} (basic rate) to ${formatGBP(result.taxSaving40)} (higher rate)</p>
+          <p style="color:#6b7280;font-size:12px">Calculated at freelancercalc.co.uk using ${TAX_YEAR} HMRC mileage rates.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">

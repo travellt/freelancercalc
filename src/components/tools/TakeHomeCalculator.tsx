@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import { compareTakeHome, type ComparisonResult } from '@/lib/calculations';
 import { formatGBP, TAX_YEAR, PERSONAL_ALLOWANCE, NI1_PRIMARY_THRESHOLD, type StudentLoanPlan, type TaxRegion } from '@/lib/tax';
+import EmailCapture from './EmailCapture';
 
 function InputField({
   label, hint, value, onChange, prefix, suffix, min = 0, max, step = 1,
@@ -338,6 +339,23 @@ export default function TakeHomeCalculator() {
           )}
         </ul>
       </div>
+
+      {/* Email capture */}
+      <EmailCapture
+        toolName="Take-Home Pay Calculator"
+        resultsSummary={`Revenue: ${formatGBP(st.revenue)} | Sole trader: ${formatGBP(st.takeHome)} | Ltd company: ${formatGBP(ltd.takeHome)} | Difference: ${formatGBP(Math.abs(difference))}/yr`}
+        resultsHtml={`
+          <h2>Your Take-Home Pay Comparison (${TAX_YEAR})</h2>
+          <p><strong>Annual revenue:</strong> ${formatGBP(st.revenue)} | <strong>Expenses:</strong> ${formatGBP(st.expenses)}</p>
+          <table style="border-collapse:collapse;width:100%;margin:16px 0">
+            <tr style="background:#f3f4f6"><th style="text-align:left;padding:8px">Structure</th><th style="text-align:right;padding:8px">Take-Home</th><th style="text-align:right;padding:8px">Effective Tax Rate</th></tr>
+            <tr><td style="padding:8px">Sole Trader</td><td style="text-align:right;padding:8px">${formatGBP(st.takeHome)}</td><td style="text-align:right;padding:8px">${st.effectiveTaxRate}%</td></tr>
+            <tr><td style="padding:8px">Limited Company</td><td style="text-align:right;padding:8px">${formatGBP(ltd.takeHome)}</td><td style="text-align:right;padding:8px">${ltd.effectiveTaxRate}%</td></tr>
+          </table>
+          <p>${ltdBetter ? `A limited company saves you <strong>${formatGBP(difference)}/year</strong>.` : `A sole trader saves you <strong>${formatGBP(Math.abs(difference))}/year</strong>.`}</p>
+          <p style="color:#6b7280;font-size:12px">Calculated at freelancercalc.co.uk using ${TAX_YEAR} HMRC rates.</p>
+        `}
+      />
 
       {/* Methodology */}
       <div className="mt-8 rounded-lg bg-gray-50 p-4 text-xs text-gray-500">
