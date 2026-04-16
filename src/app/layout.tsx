@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import './globals.css';
@@ -67,13 +67,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
-          <Script
-            src="https://cloud.umami.is/script.js"
-            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
-            strategy="afterInteractive"
-          />
-        )}
+        <Analytics />
       </body>
     </html>
   );
