@@ -30,6 +30,13 @@ const GUIDES: Guide[] = [
     readTime: '12 min',
     category: 'Tax & Expenses',
   },
+  {
+    slug: 'ir35-explained',
+    title: 'IR35 Explained: What Every UK Contractor Needs to Know',
+    description: 'Plain-English guide to IR35 — the tests, off-payroll rules, CEST tool, and how to protect yourself from a surprise HMRC tax bill.',
+    readTime: '14 min',
+    category: 'Tax & Compliance',
+  },
 ];
 
 export default function GuidesPage() {

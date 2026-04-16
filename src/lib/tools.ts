@@ -96,6 +96,14 @@ export const TOOLS: Tool[] = [
     tier: 3,
     available: true,
   },
+  {
+    slug: 'invoice-generator',
+    title: 'UK Invoice Generator',
+    description: 'Create professional, legally-compliant UK invoices and download as PDF. No signup — your details save locally.',
+    category: 'business',
+    tier: 2,
+    available: true,
+  },
 ];
 
 export function getAvailableTools(): Tool[] {

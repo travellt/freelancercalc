@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import IR35Checker from '@/components/tools/IR35Checker';
 import { FAQSchema, WebAppSchema } from '@/components/seo/StructuredData';
 
@@ -35,6 +36,12 @@ export default function IR35CheckerPage() {
         <p className="mt-2 text-sm text-gray-400">
           Indicative assessment only &middot; Not a substitute for professional advice
         </p>
+        <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800">
+          New to IR35? Start with our plain-English guide:{' '}
+          <Link href="/guides/ir35-explained" className="font-medium underline">
+            IR35 Explained: What Every UK Contractor Needs to Know →
+          </Link>
+        </div>
       </div>
 
       <IR35Checker />
